@@ -17,11 +17,11 @@
 
   <div class="pagination pagination-centered">
     <ul>
-      <li><a href="#">Prev</a></li>
+      <li><a href="/page/<%= @prev %>">Prev</a></li>
       <% (@start_page..@end_page).each do |page| %>
         <li><a href="/page/<%= page %>"><%= page %></a></li>
       <% end %>
-      <li><a href="#">Next</a></li>
+      <li><a href="/page/<%= @next %>">Next</a></li>
     </ul>
   </div>
 </main>

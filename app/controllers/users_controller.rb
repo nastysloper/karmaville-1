@@ -6,10 +6,11 @@ class UsersController < ApplicationController
   end
 
   def page
-    # p "PAGE ID: #{params[:page_id]}"
     @users = User.page(params[:page_id]) 
     @start_page = params[:page_id]
     @end_page = (params[:page_id].to_i + 5).to_s
+    @start_page.to_i > 1 ? @prev = (@start_page.to_i - 1).to_s : @prev = nil
+    @end_page.to_i < (User.count)/20 ? @next = (@end_page.to_i + 1).to_s : @next = nil 
     render :index
   end
 end
