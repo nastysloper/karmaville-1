@@ -3,6 +3,6 @@ Karmaville::Application.routes.draw do
 
   root :to => 'users#index'
 
-  # match '/page/:page_id' => 'users.page(:page_id)'
+  match '/page/:page_id' => 'users#page'
 
 end

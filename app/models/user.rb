@@ -23,7 +23,6 @@ class User < ActiveRecord::Base
 
   def total_karma
     total_karma_points
-    # self.karma_points.sum(:value)
   end
 
   def full_name
@@ -31,7 +30,7 @@ class User < ActiveRecord::Base
   end
 
   def self.page(page_num)
-    User.by_karma.limit(20).offset(20*(page_num-1))
+    User.by_karma.limit(20).offset(20*(page_num.to_i-1))
   end
 
 end
