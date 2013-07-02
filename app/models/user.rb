@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_many :karma_points
 
-  attr_accessible :first_name, :last_name, :email, :username
+  attr_accessible :first_name, :last_name, :email, :username, :total_karma_points
 
   validates :first_name, :presence => true
   validates :last_name, :presence => true
@@ -18,14 +18,20 @@ class User < ActiveRecord::Base
             :uniqueness => {:case_sensitive => false}
 
   def self.by_karma
-    joins(:karma_points).group('users.id').order('SUM(karma_points.value) DESC')
+    order('total_karma_points DESC')
   end
 
   def total_karma
-    self.karma_points.sum(:value)
+    total_karma_points
+    # self.karma_points.sum(:value)
   end
 
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def self.page(page_num)
+    User.by_karma.limit(20).offset(20*(page_num-1))
+  end
+
 end

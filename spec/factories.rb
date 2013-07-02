@@ -8,17 +8,36 @@ FactoryGirl.define do
     username
     email
 
+
     factory :user_with_karma do
-      ignore do
-        points 1
-        total  10
+      after :create do |user|
+        3.times {
+          user.karma_points.build attributes_for(:karma_point)
+        }
       end
+    end
 
-      after :create do |user, evaluator|
-        points    = evaluator.points
-        value_per = evaluator.total/evaluator.points
+    factory :user_with_low_karma do
+      after :create do |user|
+        3.times {
+          user.karma_points.create attributes_for(:karma_point, value: 5)
+        }
+      end
+    end
 
-        create_list(:karma_point, points, :user => user, :value => value_per)
+    factory :user_with_med_karma do
+      after :create do |user|
+        3.times {
+          user.karma_points.create attributes_for(:karma_point, value: 7)
+        }
+      end
+    end
+
+    factory :user_with_high_karma do
+      after :create do |user|
+        3.times {
+          user.karma_points.create attributes_for(:karma_point, value: 10)
+        }
       end
     end
   end

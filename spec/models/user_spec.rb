@@ -22,19 +22,22 @@ describe User do
 
   describe '.by_karma' do
     it 'returns users in order of highest-to-lowest karma' do
-      user_med   = create(:user_with_karma, :total => 500, :points => 2)
-      user_low   = create(:user_with_karma, :total => 200, :points => 2)
-      user_high  = create(:user_with_karma, :total => 800, :points => 2)
+      user_med   = create(:user_with_med_karma)
+      user_low   = create(:user_with_low_karma)
+      user_high  = create(:user_with_high_karma)
 
-      User.by_karma.should eq [user_high, user_med, user_low]
+      User.by_karma.should eq [user_high.reload, user_med.reload, user_low.reload]
     end
   end
 
   describe '#total_karma' do
-    let(:user) { create(:user_with_karma, :total => 500, :points => 2) }
+    let(:user) { create(:user) }
 
-    it 'returns the total karma for the user' do
-      user.total_karma.should eq 500
+    it 'returns the total karma for the user' do 
+        user.karma_points.create(value: 6, label: "b")
+        user.karma_points.create(value: 6, label: "b")
+        user.karma_points.create(value: 6, label: "b")
+        user.reload.total_karma.should == 18
     end
   end
 
@@ -48,4 +51,18 @@ describe User do
       user.full_name.should eq 'John Doe'
     end
   end
+
+  describe '.page' do
+    let(:users) { 100.times {create(:user)}}
+
+    it 'returns the first 20 users, ranked by karma, on the first page' do
+      User.page(1).should eq(User.by_karma[0..19])
+    end
+
+    it 'does not return any users who are not among the first 20 on the first page' do
+      User.page(1).should_not include(*User.by_karma[20..99])
+    end
+
+  end
+
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe KarmaPoint do
   it { should belong_to(:user) }
-
+ 
   describe '#valid?' do
     it { should validate_presence_of(:user) }
 
@@ -18,9 +18,8 @@ describe KarmaPoint do
     let(:user) { create(:user) }
 
     it "increments the user's total_karma by the value of the karma point" do
-      expect {
-        create(:karma_point, :user => user, :value => 10)
-      }.to change(user, :total_karma).by(10)
+       user.karma_points.create(:value => 10, :label => "blah" )
+       user.reload.total_karma_points.should == 10
     end
   end
 end
