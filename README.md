@@ -12,3 +12,5 @@ $ rake db:setup
 ```
 
 The `rake db:setup` command could take several minutes to run.
+
+Karmaville solution that's been solved for parts 1 and 2: speed up the database and then add pagination.
